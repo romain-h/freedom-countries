@@ -1,0 +1,1 @@
+# Freedom Countries script
