@@ -4,18 +4,12 @@ APP?=freedom-countries
 ## build: build the application
 build:
 	@echo "Building..."
-	@go build -o ${APP} *.go
-
-.PHONY: build-windows
-## build: build the application
-build-windows:
-	@echo "Building for Windows..."
-	@GOOS=windows GOARCH=amd64 go build -o ${APP} *.go
+	@go build -o ${APP} cmd/update/main.go
 
 .PHONY: run
 ## run: runs go run main.go
 run:
-	go run -race *.go $(ARGS)
+	go run -race cmd/update/main.go $(ARGS)
 
 .PHONY: test
 ## test: runs go test with default values
