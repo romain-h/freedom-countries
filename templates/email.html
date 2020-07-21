@@ -1,0 +1,145 @@
+<html>
+<head></head>
+<body>
+  Hi {{ .Name }},<br/>
+
+  Here are some update from <a href="https://freedomhouse.org/countries/freedom-world/scores"
+    target="_blank">Freedom House Org.</a><br/><br/>
+
+  {{ if gt (len .Majors) 0 }}
+  Please find attached the latest full list.
+
+  <h2>Major changes</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Country</th>
+        <th>World Score</th>
+        <th>World Status</th>
+        <th>Net Score</th>
+        <th>Net Status</th>
+        <th>BT Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ range .Majors }}
+      <tr>
+        <td>{{ .Base.Name }}
+        {{ if eq .Type "addition" }}
+        <span style="font-family:'Courier';background-color:#def7ec;color:#04543f;padding: 2px 4px;border-radius:2px;">New</span>
+        {{else if eq .Type "deletion"}}
+        <span style="font-family:'Courier';background-color:#fde9e7; color:#9e2626;padding: 2px 4px;border-radius:2px;">Deleted</span>
+        {{end}}</td>
+        <td>{{ if .Base.Score }}{{ .Base.Score }}{{end}}</td>
+        <td>{{ if .Base.Status }}{{ .Base.Status }}{{end}}</td>
+        <td>{{ if .Base.NetScore }}{{ .Base.NetScore }}{{end}}</td>
+        <td>{{ if .Base.NetStatus }}{{ .Base.NetStatus }}{{end}}</td>
+        <td style="font-weight:bold">{{ if .Base.BtStatus }}{{ .Base.BtStatus }}{{end}}</td>
+      </tr>
+      {{ end }}
+    </tbody>
+  </table>
+  {{ end }}
+  {{ if gt (len .Minors) 0 }}
+
+  <h2>Minor changes</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Country</th>
+        <th>Political Rights</th>
+        <th>Civil Liberties</th>
+        <th>World Score</th>
+        <th>World Status</th>
+        <th>Obstacles To Access</th>
+        <th>LimitsOnContent</th>
+        <th>Violations of User Rights</th>
+        <th>Net Score</th>
+        <th>Net Status</th>
+        <th style="font-weight:bold">BT Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ range .Minors }}
+      <tr>
+        <td>{{ .New.Name }}</td>
+        <td>{{ if .New.PoliticalRights }}{{ .New.PoliticalRights }}
+          {{ if gt (Deref .Base.PoliticalRights) (Deref .New.PoliticalRights) }}
+            <span style="color: #eb3838;">&#9660;</span>
+          {{ end }}
+          {{ if lt (Deref .Base.PoliticalRights) (Deref .New.PoliticalRights) }}
+            <span style="color: #08a178;">&#9650;</span>
+          {{ end }}
+          {{ end }}
+        </td>
+        <td>{{ if .New.CivilLiberties }}{{ .New.CivilLiberties }}
+          {{ if gt (Deref .Base.CivilLiberties) (Deref .New.CivilLiberties) }}
+            <span style="color: #eb3838;">&#9660;</span>
+          {{ end }}
+          {{ if lt (Deref .Base.CivilLiberties) (Deref .New.CivilLiberties) }}
+            <span style="color: #08a178;">&#9650;</span>
+          {{ end }}
+          {{ end }}
+        </td>
+        <td>{{ if .New.Score }}{{ .New.Score }}
+          {{ if gt (Deref .Base.Score) (Deref .New.Score) }}
+            <span style="color: #eb3838;">&#9660;</span>
+          {{ end }}
+          {{ if lt (Deref .Base.Score) (Deref .New.Score) }}
+            <span style="color: #08a178;">&#9650;</span>
+          {{ end }}
+          {{ end }}
+        </td>
+        <td>{{ if .New.Status }}{{ .New.Status }}{{ end }}</td>
+        <td>{{ if .New.ObstaclesToAccess }}{{ .New.ObstaclesToAccess }}
+          {{ if .Base.ObstaclesToAccess }}
+          {{ if gt (Deref .Base.ObstaclesToAccess) (Deref .New.ObstaclesToAccess) }}
+            <span style="color: #eb3838;">&#9660;</span>
+          {{ end }}
+          {{ if lt (Deref .Base.ObstaclesToAccess) (Deref .New.ObstaclesToAccess) }}
+            <span style="color: #08a178;">&#9650;</span>
+          {{ end }}
+          {{ end }}
+          {{ end }}
+        </td>
+        <td>{{ if .New.LimitsOnContent }}{{ .New.LimitsOnContent }}
+          {{ if .Base.LimitsOnContent }}
+          {{ if gt (Deref .Base.LimitsOnContent) (Deref .New.LimitsOnContent) }}
+            <span style="color: #eb3838;">&#9660;</span>
+          {{ end }}
+          {{ if lt (Deref .Base.LimitsOnContent) (Deref .New.LimitsOnContent) }}
+            <span style="color: #08a178;">&#9650;</span>
+          {{ end }}
+          {{ end }}
+          {{ end }}
+        </td>
+        <td>{{ if .New.ViolationsOfUR }}{{ .New.ViolationsOfUR }}
+          {{ if .Base.ViolationsOfUR }}
+          {{ if gt (Deref .Base.ViolationsOfUR) (Deref .New.ViolationsOfUR) }}
+            <span style="color: #eb3838;">&#9660;</span>
+          {{ end }}
+          {{ if lt (Deref .Base.ViolationsOfUR) (Deref .New.ViolationsOfUR) }}
+            <span style="color: #08a178;">&#9650;</span>
+          {{ end }}
+          {{ end }}
+          {{ end }}
+        </td>
+        <td>{{ if .New.NetScore }}{{ .New.NetScore }}
+          {{ if .Base.NetScore }}
+          {{ if gt (Deref .Base.NetScore) (Deref .New.NetScore) }}
+            <span style="color: #eb3838;">&#9660;</span>
+          {{ end }}
+          {{ if lt (Deref .Base.NetScore) (Deref .New.NetScore) }}
+            <span style="color: #08a178;">&#9650;</span>
+          {{ end }}
+          {{ end }}
+          {{ end }}</td>
+        <td>{{ if .New.NetStatus }}{{ .New.NetStatus }}{{end}}</td>
+        <td style="font-weight:bold">{{ if .New.BtStatus }}{{ .New.BtStatus }}{{end}}</td>
+      </tr>
+      {{ end }}
+    </tbody>
+  </table>
+  {{ end }}
+</body>
+</html>

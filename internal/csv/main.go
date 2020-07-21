@@ -10,12 +10,12 @@ import (
 	"strconv"
 
 	"github.com/romain-h/freedom-countries/internal/score"
+	"github.com/romain-h/freedom-countries/internal/storage"
 )
 
-func GenerateBTListWithScore(countries map[string]score.Country, filename string) bytes.Buffer {
-	file, _ := os.Open(filename)
-	defer file.Close()
-	reader := csv.NewReader(bufio.NewReader(file))
+func GenerateBTListWithScore(store storage.Storage, countries map[string]score.Country, filename string) bytes.Buffer {
+	file, _ := store.GetFile(filename)
+	reader := csv.NewReader(bytes.NewReader(*file))
 
 	var fullLines [][]string
 	i := -1
@@ -35,6 +35,11 @@ func GenerateBTListWithScore(countries map[string]score.Country, filename string
 		country, ok := countries[line[7]]
 		if ok {
 			line = append(line, *country.BtStatus)
+			if *country.BtStatus == "Precluded" || *country.BtStatus == "Case by case" {
+				line = append(line, "TRUE")
+			} else {
+				line = append(line, "FALSE")
+			}
 		}
 		fullLines = append(fullLines, line)
 	}
@@ -63,7 +68,7 @@ func ReadScores(filename string) []score.Country {
 		if err == io.EOF {
 			break
 		} else if err != nil {
-			log.Fatal("ReadScores: %e", err)
+			log.Fatal(err)
 		}
 
 		s := score.Country{Name: line[0]}
@@ -110,26 +115,3 @@ func ReadScores(filename string) []score.Country {
 
 	return allScores
 }
-
-// func WriteScores(filename string, scores []score.Country) {
-// file, _ := os.Create(filename)
-// defer file.Close()
-
-// writer := csv.NewWriter(file)
-// defer writer.Flush()
-
-// var collection [][]string
-// for i, s := range scores {
-
-// politicalRights := strconv.Itoa(*s.PoliticalRights)
-// civilLiberties := strconv.Itoa(*s.CivilLiberties)
-// score := strconv.Itoa(*s.Score)
-// obstacle := strconv.Itoa(*s.ObstaclesToAccess)
-// line := []string{s.Name, politicalRights}
-// collection = append(collection, line)
-// }
-// err := writer.WriteAll(collection)
-// if err != nil {
-// log.Fatal(err)
-// }
-// }

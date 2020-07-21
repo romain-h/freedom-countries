@@ -4,7 +4,7 @@ APP?=freedom-countries
 ## build: build the application
 build:
 	@echo "Building..."
-	@go build -o ${APP} cmd/update/main.go
+	@GOOS=linux GOARCH=amd64 go build -o bin/${APP} cmd/update/main.go
 
 .PHONY: run
 ## run: runs go run main.go
