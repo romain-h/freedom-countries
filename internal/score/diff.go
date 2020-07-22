@@ -2,11 +2,12 @@ package score
 
 import (
 	"bytes"
+	"html/template"
 	"os"
-	"path"
 	"reflect"
 	"sort"
-	"text/template"
+
+	"github.com/romain-h/freedom-countries/internal/storage"
 )
 
 type Diff struct {
@@ -17,11 +18,12 @@ type Diff struct {
 
 type DiffMap map[string]Diff
 
-func (diffs *DiffMap) RenderEmail(templateFileName string) (*string, error) {
-	name := path.Base(templateFileName)
-	t, err := template.New(name).Funcs(template.FuncMap{
+func (diffs *DiffMap) RenderEmail(store storage.Storage, templateFileName string) (*string, error) {
+	tmplt, err := store.GetFile(templateFileName)
+
+	t, err := template.New("email.html").Funcs(template.FuncMap{
 		"Deref": func(i *int) int { return *i },
-	}).ParseFiles(templateFileName)
+	}).Parse(string(*tmplt))
 	if err != nil {
 		return nil, err
 	}

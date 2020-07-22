@@ -23,6 +23,14 @@ data "archive_file" "zip" {
   output_path = "freedom-countries.zip"
 }
 
+resource "aws_s3_bucket_object" "email_template" {
+  bucket = var.s3_bucket
+  key    = "email_template.html"
+  source = "templates/email.html"
+
+  etag = filemd5("templates/email.html")
+}
+
 data "aws_iam_policy_document" "policy" {
   statement {
     sid    = ""
@@ -91,7 +99,7 @@ resource "aws_iam_policy" "lambda_ses" {
         "ses:SendEmail",
         "ses:SendRawEmail"
       ],
-      "Resource": "arn:aws:ses:eu-west-2:733473327839:identity/isorine.xyz",
+      "Resource": "arn:aws:ses:*:*:*",
       "Effect": "Allow"
     }
   ]
@@ -161,7 +169,8 @@ resource "aws_lambda_permission" "allow_cloudwatch" {
 
 resource "aws_cloudwatch_event_rule" "watcher_freedom_countries" {
   name                = "watch_freedom_countries_website"
-  schedule_expression = "rate(5 days)"
+  schedule_expression = "rate(6 minutes)"
+  # schedule_expression = "rate(5 days)"
 }
 
 resource "aws_cloudwatch_event_target" "watcher" {

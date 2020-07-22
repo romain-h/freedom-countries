@@ -55,10 +55,11 @@ func process() error {
 
 	// Nothing changed
 	if len(diff) == 0 {
+		fmt.Println("FUCP -- no diff")
 		return nil
 	}
 
-	diffHTML, err := diff.RenderEmail("./templates/email.html")
+	diffHTML, err := diff.RenderEmail(store, "email_template.html")
 	if err != nil {
 		fmt.Println(err)
 		return err
@@ -79,7 +80,12 @@ func process() error {
 			},
 		},
 	}
-	mailer.SendRaw(rawEmail)
+	_, err = mailer.SendRaw(rawEmail)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	fmt.Println("FUCP -- email sent")
 
 	latestCollection, _ := json.Marshal(scores)
 	store.WriteFile("last.json", latestCollection)
