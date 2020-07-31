@@ -1,3 +1,11 @@
+terraform {
+  backend "s3" {
+    bucket = "countries-ec1d8a43-4a61-4883-b299-51090a0f7a6e"
+    key    = "config/terraform.tfstate"
+    region = "eu-west-2"
+  }
+}
+
 provider "aws" {
   profile = "default"
   region  = "eu-west-2"
@@ -152,9 +160,9 @@ resource "aws_lambda_function" "update_freedom_countries" {
 
   environment {
     variables = {
-      S3_BUCKET: var.s3_bucket,
-      FCUP_EMAIL: var.fcup_email,
-      FCUP_NAME: var.fcup_name
+      S3_BUCKET : var.s3_bucket,
+      FCUP_EMAIL : var.fcup_email,
+      FCUP_NAME : var.fcup_name
     }
   }
   depends_on = [aws_iam_role_policy_attachment.lambda_logs, aws_iam_role_policy_attachment.lambda_s3]
