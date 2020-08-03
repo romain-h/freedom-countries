@@ -23,6 +23,10 @@ variable "s3_bucket" {
   type = string
 }
 
+variable "cron_rate" {
+  type = string
+}
+
 provider "archive" {}
 
 data "archive_file" "zip" {
@@ -177,8 +181,7 @@ resource "aws_lambda_permission" "allow_cloudwatch" {
 
 resource "aws_cloudwatch_event_rule" "watcher_freedom_countries" {
   name                = "watch_freedom_countries_website"
-  schedule_expression = "rate(6 minutes)"
-  # schedule_expression = "rate(5 days)"
+  schedule_expression = "rate(${var.cron_rate})"
 }
 
 resource "aws_cloudwatch_event_target" "watcher" {
