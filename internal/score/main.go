@@ -16,7 +16,7 @@ type Country struct {
 	ViolationsOfUR    *int    `json:"violations_of_UR"`
 	NetScore          *int    `json:"net_score"`
 	NetStatus         *string `json:"net_status"`
-	BtStatus          *string `json:"bt_status"`
+	Risk              *string `json:"risk"`
 }
 
 type Countries map[string]Country
@@ -41,13 +41,13 @@ func Preprocess(scores Countries) {
 	partlyFree := "Partly Free"
 
 	for key, score := range scores {
-		status := "Approved"
+		status := "low"
 		if *score.Status == notFree || (score.NetStatus != nil && *score.NetStatus == notFree) {
-			status = "Precluded"
+			status = "high"
 		} else if *score.Status == partlyFree || (score.NetStatus != nil && *score.NetStatus == partlyFree) {
-			status = "Case by case"
+			status = "medium"
 		}
-		score.BtStatus = &status
+		score.Risk = &status
 		scores[key] = score
 	}
 }

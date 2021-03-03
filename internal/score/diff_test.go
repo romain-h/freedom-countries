@@ -52,27 +52,27 @@ func TestGetDiff(t *testing.T) {
 }
 
 func TestSplitMinors(t *testing.T) {
-	approved := "Approved"
-	precluded := "Precluded"
+	low := "low"
+	high := "high"
 
 	a := Diff{Type: "addition", Base: &Country{}}
 	b := Diff{Type: "deletion", Base: &Country{}}
 	c := Diff{
 		Type: "update",
 		Base: &Country{
-			BtStatus: &approved,
+			Risk: &low,
 		},
 		New: &Country{
-			BtStatus: &precluded,
+			Risk: &high,
 		},
 	}
 	d := Diff{
 		Type: "update",
 		Base: &Country{
-			BtStatus: &approved,
+			Risk: &low,
 		},
 		New: &Country{
-			BtStatus: &approved,
+			Risk: &low,
 		},
 	}
 

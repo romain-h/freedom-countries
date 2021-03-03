@@ -34,8 +34,8 @@ func GenerateBTListWithScore(store storage.Storage, countries map[string]score.C
 		}
 		country, ok := countries[line[7]]
 		if ok {
-			line = append(line, *country.BtStatus)
-			if *country.BtStatus == "Precluded" || *country.BtStatus == "Case by case" {
+			line = append(line, *country.Risk)
+			if *country.Risk == "high" || *country.Risk == "medium" {
 				line = append(line, "TRUE")
 			} else {
 				line = append(line, "FALSE")
@@ -108,7 +108,7 @@ func ReadScores(filename string) []score.Country {
 			s.NetStatus = &line[9]
 		}
 		if line[10] != "" {
-			s.BtStatus = &line[10]
+			s.Risk = &line[10]
 		}
 		allScores = append(allScores, s)
 	}

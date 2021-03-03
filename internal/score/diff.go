@@ -60,7 +60,7 @@ func (diffs *DiffMap) SplitMinors() (DiffMap, DiffMap) {
 			continue
 		}
 
-		if *v.Base.BtStatus != *v.New.BtStatus {
+		if *v.Base.Risk != *v.New.Risk {
 			majors[k] = v
 			continue
 		}
