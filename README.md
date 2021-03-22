@@ -1,9 +1,10 @@
-# Freedom Countries script
+# Freedom Countries watcher
 
-Fetches updated list of countries from
+Watch the list of countries from
 [FreedomHouse World](https://freedomhouse.org/countries/freedom-world/scores)
 and
-[FreedomHouse Net](https://freedomhouse.org/countries/freedom-net/scores)
+[FreedomHouse Net](https://freedomhouse.org/countries/freedom-net/scores) and
+compute risk scores. The diff is sent via email.
 
 ## Deployment
 
